@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTodos } from "./redux/slice/todo";
+// import Products from "./Products";
 
 function App() {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  console.log("State", state);
+  if (state.todo.isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="font-bold text-xl mb-2">TODO APP REACT REDUX(TOOLKIT)</h1>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={(e) => dispatch(fetchTodos())}
+      >
+        Fetch todos
+      </button>
+
+      {state.todo.data &&
+        state.todo.data.map((todo) => (
+          <ol>
+            <li className="font-bold text-xl mb-2">{todo.title}</li>
+          </ol>
+        ))}
     </div>
   );
 }
